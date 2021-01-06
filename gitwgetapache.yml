@@ -1,0 +1,17 @@
+---
+ - hosts: db1
+   become: true
+   vars_files:
+      - vault-password-git.yml
+   tasks:
+    - name: ensure git is installed
+      apt: pkg=git-core state=latest
+    - name: Remove index.html
+      command: rm -r  /var/www/html/index.html
+      command: rm -r ~/samplejavaforansible
+    - name: Execute set github password when yes
+      command: git clone https://swapnilshrirao9:{{ password }}@github.com/swapnilshrirao9/samplejavaforansible.git
+    - name: file move to /var/www/html/
+      command: cp ~/samplejavaforansible/index.html /var/www/html/
+    - name: apache service start
+      service: name=apache2  state=restarted 
